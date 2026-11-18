@@ -1,7 +1,8 @@
 from django import forms
-from .models import Task
+from .models import Book
 
-class TaskForm(forms.ModelForm):
+
+class BookForm(forms.ModelForm):
     class Meta:
-        model = Task
-        fields = ['content']
+        model = Book
+        fields = ['title', 'author', 'genre']

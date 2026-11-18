@@ -1,30 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="uk">
 <head>
-    <title>To-Do List</title>
+    <meta charset="UTF-8">
+    <title>Список книг для прочитання</title>
 </head>
 <body>
-    <h1>My To-Do List</h1>
+    <h1>Список книг для прочитання</h1>
+
+    <p>
+        Сортувати за:
+        <a href="{% url 'index' %}?sort=title">Назвою</a> |
+        <a href="{% url 'index' %}?sort=author">Автором</a> |
+        <a href="{% url 'index' %}?sort=genre">Жанром</a>
+    </p>
 
     <ul>
-        {% for task in tasks %}
+        {% for book in books %}
             <li>
-                {% if task.done %}
-                    <strike>{{ task.content }}</strike>
+                {% if book.is_read %}
+                    <strike>{{ book.title }} — {{ book.author }} ({{ book.genre }})</strike>
                 {% else %}
-                    {{ task.content }}
+                    {{ book.title }} — {{ book.author }} ({{ book.genre }})
                 {% endif %}
-                <a href="{% url 'mark_done' task.id %}">Done</a>
-                <a href="{% url 'delete_task' task.id %}">Delete</a>
+                <a href="{% url 'mark_read' book.id %}">Прочитано</a>
+                <a href="{% url 'delete_book' book.id %}">Видалити</a>
             </li>
+        {% empty %}
+            <li>Список порожній</li>
         {% endfor %}
     </ul>
 
-    <h2>Add New Task</h2>
-    <form method="post" action="{% url 'add_task' %}">
+    <h2>Додати книгу</h2>
+    <form method="post" action="{% url 'add_book' %}">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Add Task</button>
+        <button type="submit">Додати</button>
     </form>
 </body>
 </html>
